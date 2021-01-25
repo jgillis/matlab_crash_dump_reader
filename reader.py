@@ -20,7 +20,10 @@ with open(filename,'r') as f:
     if line.startswith('['):
       parts = line.rstrip().split()
       if parts[0]=="[" and parts[1].endswith("]"):
-        [lib_name, lib_pos] = parts[3].split("+")
+        try:
+          [lib_name, lib_pos] = parts[3].split("+")
+        except:
+          continue
 
         lib_pos_hex = "0x%X" % int(lib_pos)
         
@@ -45,8 +48,8 @@ with open(filename,'r') as f:
 
         print(" ".join(new_parts))
 
-
-        if os.path.exists(source_file):
+        print(source_file)
+        if source_file is not None and os.path.exists(source_file):
           with open(source_file,'r') as sf:
             for i,line in enumerate(sf):
               if i<source_line-context: continue
